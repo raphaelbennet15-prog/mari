@@ -29,7 +29,8 @@
 /* ==== Reset ==== */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; padding: 0; border: 0 solid var(--border); }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 6rem; }
+@media (min-width: 768px) { html { scroll-padding-top: 7rem; } }
 body {
   background: var(--background);
   color: var(--foreground);
@@ -236,7 +237,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; line
 
 /* ==== Sections ==== */
 .section { padding: 5rem 0; scroll-margin-top: 6rem; }
-@media (min-width: 768px) { .section { padding: 8rem 0; } }
+@media (min-width: 768px) { .section { padding: 8rem 0; scroll-margin-top: 7rem; } }
 .section-muted { background: rgba(246,244,234,0.6); }
 
 /* ==== About ==== */

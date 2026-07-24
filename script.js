@@ -37,6 +37,36 @@ function initHeaderScroll() {
   fabTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 
+// ==== Anchor navigation with offset for fixed header ====
+function initAnchorNavigation() {
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!href || href === "#") return;
+
+    link.addEventListener("click", (event) => {
+      const target = document.querySelector(href);
+      if (!target) return;
+
+      event.preventDefault();
+      const header = document.getElementById("site-header");
+      const offset = (header ? header.offsetHeight : 0) + 16;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
+
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+      history.replaceState(null, "", href);
+
+      const menu = document.getElementById("nav-mobile");
+      if (menu && menu.hidden === false) {
+        menu.hidden = true;
+        const btn = document.getElementById("menu-toggle");
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        const icon = document.getElementById("menu-icon");
+        if (icon) icon.setAttribute("data-lucide", "menu");
+      }
+    });
+  });
+}
+
 // ==== Mobile menu ====
 function initMobileMenu() {
   const btn = document.getElementById("menu-toggle");
@@ -176,6 +206,7 @@ function initYear() {
 document.addEventListener("DOMContentLoaded", () => {
   applyContactLinks();
   initHeaderScroll();
+  initAnchorNavigation();
   initMobileMenu();
   initReveal();
   initCounters();
