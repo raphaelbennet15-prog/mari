@@ -73,14 +73,40 @@ function initMobileMenu() {
   const menu = document.getElementById("nav-mobile");
   const icon = document.getElementById("menu-icon");
   let open = false;
+
   const set = (v) => {
     open = v;
     menu.hidden = !v;
+    menu.classList.toggle("is-open", v);
     btn.setAttribute("aria-expanded", v ? "true" : "false");
-    icon.className = v ? "lucide lucide-x" : "lucide lucide-menu";
+
+    if (icon) {
+      icon.setAttribute("data-lucide", v ? "x" : "menu");
+      icon.className = "lucide";
+      if (window.lucide) window.lucide.createIcons();
+    }
   };
-  btn.addEventListener("click", () => set(!open));
+
+  btn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    set(!open);
+  });
+
   menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => set(false)));
+
+  document.addEventListener("click", (event) => {
+    if (!open || window.innerWidth >= 768) return;
+    if (menu.contains(event.target) || btn.contains(event.target)) return;
+    set(false);
+  });
+
+  window.addEventListener("scroll", () => {
+    if (open && window.innerWidth < 768) set(false);
+  }, { passive: true });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768) set(false);
+  });
 }
 
 // ==== Reveal on scroll ====
